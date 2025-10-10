@@ -1,7 +1,7 @@
 <!-- SPDX-License-Identifier: MIT -->
 # Bats Docker image
 
-This repository provides a lightweight alpine-based Docker image for [bats-core](https://github.com/bats-core/bats-core), [bats-support](https://github.com/ztombol/bats-support), [bats-assert](https://github.com/ztombol/bats-assert)m [bats-file](https://github.com/ztombol/bats-file) and [bats-mock](https://github.com/grayhemp/bats-mock).
+This repository provides a lightweight alpine-based Docker image for [bats-core](https://github.com/bats-core/bats-core), [bats-support](https://github.com/ztombol/bats-support), [bats-assert](https://github.com/ztombol/bats-assert), [bats-file](https://github.com/ztombol/bats-file) and [bats-mock](https://github.com/grayhemp/bats-mock).
 
 ## Supported tags and respective Dockerfile links
 
