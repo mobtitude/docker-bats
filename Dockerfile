@@ -3,9 +3,9 @@
 ###############################################################################
 # BUILD STAGE
 ###############################################################################
-FROM docker.io/library/alpine:3.17.2 AS builder
+FROM docker.io/library/alpine:3.22.2 AS builder
 
-ARG CURL_VERSION=7.87.0-r1
+ARG CURL_VERSION=8.14.1-r2
 # https://github.com/bats-core/bats-core/releases/latest
 ARG BATS_CORE_VERSION=1.8.1
 # https://github.com/ztombol/bats-support/releases/latest
@@ -25,16 +25,16 @@ RUN curl -fsSL https://github.com/bats-core/bats-core/archive/v${BATS_CORE_VERSI
     curl -fsSL https://github.com/ztombol/bats-support/archive/v${BATS_SUPPORT_VERSION}.tar.gz | tar xzv; \
     curl -fsSL https://github.com/ztombol/bats-assert/archive/v${BATS_ASSERT_VERSION}.tar.gz | tar xzv; \
     curl -fsSL https://github.com/ztombol/bats-file/archive/v${BATS_FILE_VERSION}.tar.gz | tar xzv; \
-    curl -fsSL https://github.com/grayhemp/bats-mock/archive/v${BATS_MOCK_VERSION}.tar.gz
+    curl -fsSL https://github.com/grayhemp/bats-mock/archive/v${BATS_MOCK_VERSION}.tar.gz | tar xzv
 
 ###############################################################################
 # FINAL IMAGE
 ###############################################################################
-FROM docker.io/library/alpine:3.17.2
+FROM docker.io/library/alpine:3.22.2
 
-ARG BASH_VERSION=5.2.15-r0
-ARG PARALLEL_VERSION=20221022-r0
-ARG NCURSES_VERSION=6.3_p20221119-r0
+ARG BASH_VERSION=5.2.37-r0
+ARG PARALLEL_VERSION=20250522-r0
+ARG NCURSES_VERSION=6.5_p20250503-r0
 
 RUN set -eux; \
     apk --no-cache add bash=${BASH_VERSION} parallel=${PARALLEL_VERSION} ncurses=${NCURSES_VERSION}; \
