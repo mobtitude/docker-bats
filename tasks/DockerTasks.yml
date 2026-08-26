@@ -36,4 +36,4 @@ tasks:
   test:
     desc: Test Docker image
     cmds:
-    - docker-compose --file test/docker-compose.test.yml run sut
+    - docker compose --file test/docker-compose.test.yml run sut
