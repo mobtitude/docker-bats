@@ -5,7 +5,7 @@
 ###############################################################################
 FROM docker.io/library/alpine:3.22.2 AS builder
 
-ARG CURL_VERSION=8.14.1-r2
+ARG CURL_VERSION=8.14.1-r3
 # https://github.com/bats-core/bats-core/releases/latest
 ARG BATS_CORE_VERSION=1.8.1
 # https://github.com/ztombol/bats-support/releases/latest
@@ -14,8 +14,8 @@ ARG BATS_SUPPORT_VERSION=0.3.0
 ARG BATS_ASSERT_VERSION=0.3.0
 # https://github.com/ztombol/bats-file/releases/latest
 ARG BATS_FILE_VERSION=0.2.0
-# https://github.com/grayhemp/bats-mock/releases/latest
-ARG BATS_MOCK_VERSION=1.0-beta.1
+# https://github.com/mh182/bats-mock/releases/latest
+ARG BATS_MOCK_VERSION=0.2.0
 
 RUN apk --no-cache add curl=${CURL_VERSION}
 
@@ -25,7 +25,7 @@ RUN curl -fsSL https://github.com/bats-core/bats-core/archive/v${BATS_CORE_VERSI
     curl -fsSL https://github.com/ztombol/bats-support/archive/v${BATS_SUPPORT_VERSION}.tar.gz | tar xzv; \
     curl -fsSL https://github.com/ztombol/bats-assert/archive/v${BATS_ASSERT_VERSION}.tar.gz | tar xzv; \
     curl -fsSL https://github.com/ztombol/bats-file/archive/v${BATS_FILE_VERSION}.tar.gz | tar xzv; \
-    curl -fsSL https://github.com/grayhemp/bats-mock/archive/v${BATS_MOCK_VERSION}.tar.gz | tar xzv
+    curl -fsSL https://github.com/mh182/bats-mock/archive/v${BATS_MOCK_VERSION}.tar.gz | tar xzv
 
 ###############################################################################
 # FINAL IMAGE
