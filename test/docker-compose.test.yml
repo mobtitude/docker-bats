@@ -4,4 +4,4 @@ services:
     image: '${IMAGE_NAME:?Set IMAGE_NAME to the image to test}'
     volumes:
     - './:/work:ro'
-    command: ['--tap', '/work/runtime.bats']
+    command: ['--tap', '/work']

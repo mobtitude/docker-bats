@@ -2,6 +2,10 @@
 # https://taskfile.dev
 version: '3'
 
+vars:
+  PLATFORM: ''
+  NO_CACHE: 'false'
+
 tasks:
   build:
     desc: Build Docker image
@@ -14,6 +18,8 @@ tasks:
     cmds:
     - |
       docker buildx build \
+          {{if .PLATFORM}}--platform {{.PLATFORM}}{{end}} \
+          {{if eq .NO_CACHE "true"}}--no-cache{{end}} \
           --label org.opencontainers.image.authors='Felix Furrer' \
           --label org.opencontainers.image.created=1970-01-01T00:00:00Z \
           --label org.opencontainers.image.description='TAP-compliant testing framework for Bash.' \
@@ -39,4 +45,10 @@ tasks:
     env:
       IMAGE_NAME: '{{.IMAGE_NAME}}'
     cmds:
-    - docker compose --file test/docker-compose.test.yml run --pull never --rm sut
+    - |
+      set -eu
+      {{if .PLATFORM}}export DOCKER_DEFAULT_PLATFORM='{{.PLATFORM}}'{{end}}
+      docker compose --file test/docker-compose.test.yml run --pull never --rm sut
+      output=$(docker run --rm {{if .PLATFORM}}--platform {{.PLATFORM}}{{end}} '{{.IMAGE_NAME}}')
+      printf '%s\n' "$output"
+      printf '%s\n' "$output" | grep -q 'Usage:'
