@@ -1,9 +1,7 @@
 # SPDX-License-Identifier: MIT
-version: '3'
-
 services:
   sut:
-    build:
-      context: .
-      dockerfile: ../Dockerfile
-    command: ['--help']
+    image: '${IMAGE_NAME:?Set IMAGE_NAME to the image to test}'
+    volumes:
+    - './:/work:ro'
+    command: ['--tap', '/work/runtime.bats']

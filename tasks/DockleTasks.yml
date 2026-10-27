@@ -2,9 +2,12 @@
 # https://taskfile.dev
 version: '3'
 
+vars:
+  DOCKLE_COMMAND: dockle
+
 tasks:
   lint:
     desc: Run Dockle (container image linter)
     cmds:
-    - dockle {{.IMAGE_NAME}}
+    - '{{.DOCKLE_COMMAND}} --exit-code 1 --ignore CIS-DI-0006 --ignore DKL-DI-0006 {{.IMAGE_NAME}}'
     silent: true

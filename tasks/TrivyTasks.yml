@@ -9,5 +9,5 @@ tasks:
     - sh: '{{if empty .IMAGE_NAME}}false{{end}}'
       msg: 'error: variable "IMAGE_NAME" is required (e.g. task trivy:image IMAGE_NAME=docker.io/library/alpine:latest)'
     cmds:
-    - trivy image --format table {{.IMAGE_NAME}}
+    - trivy image --config .github/linters/.trivy.yml {{.IMAGE_NAME}}
     silent: true
