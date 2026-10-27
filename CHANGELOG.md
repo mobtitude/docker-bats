@@ -1,6 +1,19 @@
 <!-- SPDX-License-Identifier: MIT -->
 # Changelog
 
+## 0.4.0
+
+- Upgrade Alpine 3.22.7 to 3.24.3, Bats 1.8.1 to 1.14.0, bats-assert 0.3.0 to 2.2.4, bats-file 0.2.0 to 0.4.0, and bats-mock 0.2.0 to 0.2.1. Retain bats-support 0.3.0 and jq 1.8.2.
+- Use maintained bats-core repositories for bats-support, bats-assert, and bats-file downloads.
+- Update curl to `8.23.0-r0`, Bash to `5.3.9-r1`, GNU Parallel to `20260322-r0`, and ncurses to `6.6_p20260516-r0`, with matching pins on AMD64 and ARM64.
+- Add AMD64 and ARM64 validation and multi-platform GHCR publication gated on runtime tests, Dockle, and Trivy for both architectures, including release tags.
+- Update workflow actions to supported runtimes so the release and lint workflows can run.
+- Add optional `PLATFORM` and `NO_CACHE` build controls and platform-aware tests; preserve local version defaults and Git-tag-based release versions.
+- Add helper, mock cleanup, parallel execution, expected-failure, temporary-directory, read-only mount, and default-command checks. Prepare GNU Parallel's user directory for nonroot execution.
+- Preserve `/opt` helper paths, the Bats entrypoint, default help, `/work`, and UID/GID 65532. Helper upgrades may require changes in downstream tests; validate existing suites before upgrading.
+
+Local validation on 2026-10-27: no-cache builds, all 15 runtime tests, and default help passed on AMD64 and ARM64. Dockle passed with informational findings only; Trivy 0.76.1 reported zero vulnerabilities on both images. Hadolint, Markdown lint, YAML lint, and actionlint passed. A local OCI archive was verified to contain both platforms. Release tagging, publication, and post-publication checks remain pending.
+
 ## 0.3.0
 
 - Add jq 1.8.2 (Alpine package `1.8.2-r0`) for JSON processing in Bats tests.

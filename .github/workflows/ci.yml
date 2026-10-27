@@ -11,39 +11,9 @@ on:
     - '**.md'
     - '.gitignore'
 
-env:
-  TASK_VERSION: 3.x
-  IMAGE_NAME: ghcr.io/mobtitude/bats:${{ github.sha }}
-
 permissions:
   contents: read
 
 jobs:
-  build:
-    runs-on: ubuntu-22.04
-    steps:
-    - name: Setup Task
-      uses: arduino/setup-task@v3
-      with:
-        version: ${{ env.TASK_VERSION }}
-        repo-token: ${{ secrets.GITHUB_TOKEN }}
-    - name: Checkout
-      uses: actions/checkout@v6
-    - name: Build
-      id: build
-      run: |
-        task docker:build IMAGE_NAME="$IMAGE_NAME"
-    - name: Test
-      run: |
-        task docker:test IMAGE_NAME="$IMAGE_NAME"
-    - name: Vulnerability scan
-      uses: aquasecurity/trivy-action@v0.36.0
-      with:
-        version: 'v0.76.1'
-        image-ref: ${{ env.IMAGE_NAME }}
-        trivy-config: '.github/linters/.trivy.yml'
-    - name: Container best practices
-      if: ${{ !cancelled() && steps.build.outcome == 'success' }}
-      run: |
-        task dockle:lint IMAGE_NAME="$IMAGE_NAME" \
-          DOCKLE_COMMAND='docker run --rm --volume /var/run/docker.sock:/var/run/docker.sock:ro goodwithtech/dockle:v0.4.15'
+  validate:
+    uses: ./.github/workflows/validate.yml
