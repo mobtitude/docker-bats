@@ -6,4 +6,6 @@ services:
     build:
       context: .
       dockerfile: ../Dockerfile
-    command: ['--help']
+    volumes:
+    - './:/work:ro'
+    command: ['--tap', '/work/runtime.bats']

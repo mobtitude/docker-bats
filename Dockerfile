@@ -35,9 +35,10 @@ FROM docker.io/library/alpine:3.22.2
 ARG BASH_VERSION=5.2.37-r0
 ARG PARALLEL_VERSION=20250522-r0
 ARG NCURSES_VERSION=6.5_p20250503-r0
+ARG JQ_VERSION=1.8.2-r0
 
 RUN set -eux; \
-    apk --no-cache add bash=${BASH_VERSION} parallel=${PARALLEL_VERSION} ncurses=${NCURSES_VERSION}; \
+    apk --no-cache add bash=${BASH_VERSION} parallel=${PARALLEL_VERSION} ncurses=${NCURSES_VERSION} jq=${JQ_VERSION}; \
     mkdir -p ~/.parallel; \
     touch ~/.parallel/will-cite
 

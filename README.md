@@ -1,11 +1,12 @@
 <!-- SPDX-License-Identifier: MIT -->
 # Bats Docker image
 
-This repository provides a lightweight alpine-based Docker image for [bats-core](https://github.com/bats-core/bats-core), [bats-support](https://github.com/ztombol/bats-support), [bats-assert](https://github.com/ztombol/bats-assert), [bats-file](https://github.com/ztombol/bats-file) and [bats-mock](https://github.com/mh182/bats-mock).
+This repository provides a lightweight alpine-based Docker image for [bats-core](https://github.com/bats-core/bats-core), [bats-support](https://github.com/ztombol/bats-support), [bats-assert](https://github.com/ztombol/bats-assert), [bats-file](https://github.com/ztombol/bats-file) and [bats-mock](https://github.com/mh182/bats-mock). It also bundles [jq](https://jqlang.org/) 1.8.2 for JSON processing in tests.
 
 ## Supported tags and respective Dockerfile links
 
-- [`1.8.0`, `1.8`, `1`, `latest`](https://github.com/ffurrer2/docker-bats/blob/main/Dockerfile)
+- `ghcr.io/mobtitude/bats:0.3.0` [Dockerfile](Dockerfile)
+- `ghcr.io/mobtitude/bats:0.2.0` [Dockerfile for 0.2.0](https://github.com/mobtitude/docker-bats/blob/0.2.0/Dockerfile)
 
 ## Usage
 
@@ -14,7 +15,7 @@ This repository provides a lightweight alpine-based Docker image for [bats-core]
 To run all Bats tests in the current directory, run the following command:
 
 ```bash
-docker run -it --rm -v "$(pwd):/workdir" ghcr.io/ffurrer2/bats:latest .
+docker run -it --rm -v "$(pwd):/work" ghcr.io/mobtitude/bats:0.3.0 .
 ```
 
 ### GitHub Actions
@@ -28,7 +29,7 @@ bats:
   - name: Checkout
     uses: actions/checkout@v3
   - name: bats
-    uses: docker://ghcr.io/ffurrer2/bats:latest
+    uses: docker://ghcr.io/mobtitude/bats:0.3.0
     with:
       args: '.'
 ```
@@ -38,26 +39,48 @@ bats:
 ### Run Bats tests of a single test file
 
 ```bash
-docker run -it --rm -v "$(pwd):/workdir" ghcr.io/ffurrer2/bats my-test.bats
+docker run -it --rm -v "$(pwd):/work" ghcr.io/mobtitude/bats:0.3.0 my-test.bats
 ```
 
 ### Use `bats` options
 
 ```bash
-docker run -it --rm -v "$(pwd):/workdir" ghcr.io/ffurrer2/bats --recursive --tap .
+docker run -it --rm -v "$(pwd):/work" ghcr.io/mobtitude/bats:0.3.0 --recursive --tap .
 ```
 
 ### Show help message
 
 ```bash
-docker run -it --rm ghcr.io/ffurrer2/bats
+docker run -it --rm ghcr.io/mobtitude/bats:0.3.0
 ```
 
 ### Show version
 
 ```bash
-docker run -it --rm ghcr.io/ffurrer2/bats --version
+docker run -it --rm ghcr.io/mobtitude/bats:0.3.0 --version
 ```
+
+### Process JSON with jq in a test
+
+Save this as `json.bats`:
+
+```bash
+#!/usr/bin/env bats
+
+@test "extract a value from JSON" {
+  run jq -r '.name' <<< '{"name":"bats"}'
+  [ "$status" -eq 0 ]
+  [ "$output" = 'bats' ]
+}
+```
+
+Run it with the Bats entrypoint:
+
+```bash
+docker run --rm -v "$(pwd):/work:ro" ghcr.io/mobtitude/bats:0.3.0 json.bats
+```
+
+The image runs as `nonroot` (UID/GID 65532) in `/work`. Mounted test files must be readable by this user; any output directories must be writable by it.
 
 ## License
 
