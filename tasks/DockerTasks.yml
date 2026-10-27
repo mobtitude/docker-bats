@@ -17,17 +17,18 @@ tasks:
           --label org.opencontainers.image.authors='Felix Furrer' \
           --label org.opencontainers.image.created=1970-01-01T00:00:00Z \
           --label org.opencontainers.image.description='TAP-compliant testing framework for Bash.' \
-          --label org.opencontainers.image.documentation=https://github.com/ffurrer2/docker-bats/blob/main/README.md \
+          --label org.opencontainers.image.documentation=https://github.com/mobtitude/docker-bats/blob/main/README.md \
           --label org.opencontainers.image.licenses='MIT AND CC0-1.0' \
           --label org.opencontainers.image.revision={{.VCS_REF}} \
-          --label org.opencontainers.image.source=https://github.com/ffurrer2/docker-bats-test \
+          --label org.opencontainers.image.source=https://github.com/mobtitude/docker-bats \
           --label org.opencontainers.image.title=bats \
-          --label org.opencontainers.image.url=https://github.com/ffurrer2/docker-bats-test \
+          --label org.opencontainers.image.url=https://github.com/mobtitude/docker-bats \
           --label org.opencontainers.image.vendor='Felix Furrer' \
           --label org.opencontainers.image.version={{.DOCKER_TAG}} \
           --label org.opencontainers.image.base.name={{.IMAGE_BASE_NAME}} \
           --label org.opencontainers.image.base.digest={{.IMAGE_BASE_DIGEST}} \
           --progress plain \
+          --load \
           --tag {{.IMAGE_NAME}} \
           .
     - docker tag {{.IMAGE_NAME}} {{.DOCKER_REGISTRY}}/{{.DOCKER_REPOSITORY}}:latest
@@ -35,5 +36,7 @@ tasks:
 
   test:
     desc: Test Docker image
+    env:
+      IMAGE_NAME: '{{.IMAGE_NAME}}'
     cmds:
-    - docker compose --file test/docker-compose.test.yml run sut
+    - docker compose --file test/docker-compose.test.yml run --pull never --rm sut

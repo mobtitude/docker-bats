@@ -3,7 +3,7 @@
 ###############################################################################
 # BUILD STAGE
 ###############################################################################
-FROM docker.io/library/alpine:3.22.2 AS builder
+FROM docker.io/library/alpine:3.22.7 AS builder
 
 ARG CURL_VERSION=8.14.1-r4
 # https://github.com/bats-core/bats-core/releases/latest
@@ -30,7 +30,7 @@ RUN curl -fsSL https://github.com/bats-core/bats-core/archive/v${BATS_CORE_VERSI
 ###############################################################################
 # FINAL IMAGE
 ###############################################################################
-FROM docker.io/library/alpine:3.22.2
+FROM docker.io/library/alpine:3.22.7
 
 ARG BASH_VERSION=5.2.37-r0
 ARG PARALLEL_VERSION=20250522-r0
@@ -54,7 +54,7 @@ RUN set -ex; \
     addgroup -g 65532 nonroot; \
     adduser -h /home/nonroot -g nonroot -s /sbin/nologin -G nonroot -D -u 65532 nonroot
 
-USER nonroot
+USER 65532:65532
 WORKDIR /work
 
 ENTRYPOINT ["/usr/local/bin/bats"]
